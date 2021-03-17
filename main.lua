@@ -2,6 +2,8 @@
 -- This plugin allow to create group and layout view for JDC1 in SpixPro Mode (62 channel).
 -- v1.1
 -- Mars 2021
+
+-- offset entre les JDC dans le layout view
 layoutOffsetX = 8
 layoutOffsetY = 7
 
