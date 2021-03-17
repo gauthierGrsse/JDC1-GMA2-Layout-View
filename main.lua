@@ -144,7 +144,7 @@ local function start()
             setupFixtInLayout(x, countFixture * layoutOffsetX, countFixtureY * layoutOffsetY)
             feedback("Setup fixture " .. x .. " in layout xml")
             countFixture = countFixture + 1
-            if (countFixture >= layoutoffsetX) then
+            if (countFixture >= layoutOffsetX) then
                 countFixture = 0
                 countFixtureY = countFixtureY + 1
             end
