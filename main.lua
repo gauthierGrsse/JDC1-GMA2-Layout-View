@@ -2,10 +2,9 @@
 -- This plugin allow to create group and layout view for JDC1 in SpixPro Mode (62 channel).
 -- v1.1
 -- Mars 2021
-
 -- offset entre les JDC dans le layout view
-layoutOffsetX = 8
-layoutOffsetY = 7
+layoutOffsetX = 8 -- Distance entre 2 instance main en X
+layoutOffsetY = 7 -- Distance entre 2 instance main en Y
 
 -- Ne pas toucher au code en dessous
 
@@ -85,14 +84,26 @@ end
 
 local function start()
     gma.feedback("--- JDCs instances group creator started ---")
-    local startID = tonumber(gma.textinput("Start Fixture ID", ""))
-    local endID = tonumber(gma.textinput("End Fixture ID", ""))
-    local startGroupID = tonumber(gma.textinput("Start group ID (3 available group)", ""))
-    local layoutViewID = tonumber(gma.textinput("Layout ViewID ", ""))
-    if (startID > endID) then -- test pour remettre dans l'ordre les 2 nombres
-        local bridge = endID
-        endID = startID
-        startID = bridge
+    local classType = tostring(gma.textinput("group or fixture", "fixture"))
+    if classType == "fixture" then
+        local startID = tonumber(gma.textinput("Start Fixture ID", ""))
+        local endID = tonumber(gma.textinput("End Fixture ID", ""))
+        local startGroupID = tonumber(gma.textinput("Start group ID (3 available group)", ""))
+        local layoutViewID = tonumber(gma.textinput("Layout ViewID ", ""))
+        if (startID > endID) then -- test pour remettre dans l'ordre les 2 nombres
+            local bridge = endID
+            endID = startID
+            startID = bridge
+        end
+
+    elseif classType == "group" then
+        groupID = tonumber(gma.textinput("Group ID", ""))
+        group = gma.show.getobj.handle("Group "..groupID)
+        for x=0, gma.show.getobj.amount(group), 1 do
+            gma.show.getobj.child(group)
+        end
+    else
+        erreur("Incompatible entry class !")
     end
 
     if (gma.gui.confirm("Confirm", "Confirm JDCs instances group and layout create for Fixture " .. startID .. " to " ..
