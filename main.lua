@@ -85,7 +85,7 @@ end
 local function start()
     gma.feedback("--- JDCs instances group creator started ---")
     local classType = tostring(gma.textinput("group or fixture", "fixture"))
-    if classType == "fixture" then
+    if classType == "fixture" then      -- Si mode fixture
         local startID = tonumber(gma.textinput("Start Fixture ID", ""))
         local endID = tonumber(gma.textinput("End Fixture ID", ""))
         local startGroupID = tonumber(gma.textinput("Start group ID (3 available group)", ""))
@@ -96,12 +96,21 @@ local function start()
             startID = bridge
         end
 
-    elseif classType == "group" then
+    elseif classType == "group" then    -- Si mode group - Par florian Anaya
         groupID = tonumber(gma.textinput("Group ID", ""))
-        group = gma.show.getobj.handle("Group "..groupID)
-        for x=0, gma.show.getobj.amount(group), 1 do
-            gma.show.getobj.child(group)
-        end
+        gma.cmd("SelectDrive 1")
+        local fileName = 'tempfile.xml'
+        local filePath = gma.show.getvar('PATH') .. '/importexport/ .. fileName'
+        gma.cmd("Export Group " .. groupID .. " \"" .. fileName .. "\"")
+
+        local file = io.open(filePath, "r")
+        local fileContent = file:read('*a')
+        file:close()
+
+        os.remove(filePath)
+
+        -- for match in fileContent:gmatch('<Subfixture ')
+
     else
         erreur("Incompatible entry class !")
     end
