@@ -109,7 +109,9 @@ local function start()
 
         os.remove(filePath)
 
-        -- for match in fileContent:gmatch('<Subfixture ')
+        for match in fileContent:gmatch('<Subfixture (.-) />') do
+            feedback(match)
+        end
 
     else
         erreur("Incompatible entry class !")
