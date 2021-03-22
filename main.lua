@@ -9,7 +9,7 @@ layoutOffsetY = 7 -- Distance entre 2 instance main en Y
 -- Ne pas toucher au code en dessous
 
 local xmlFileContent =
-    '<?xml version="1.0" encoding="utf-8"?><MA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.malighting.de/grandma2/xml/MA" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/3.9.0/MA.xsd" major_vers="3" minor_vers="9" stream_vers="0"><Info datetime="2020-11-14T01:13:58" showfile="plugin code" /><Group index="1" name="JDC"><Subfixtures>'
+    '<?xml version="1.0" encoding="utf-8"?><MA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.malighting.de/grandma2/xml/MA" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/3.9.0/MA.xsd" major_vers="1" minor_vers="0" stream_vers="0"><Info datetime="2020-11-14T01:13:58" showfile="plugin code" /><Group index="1" name="JDC"><Subfixtures>'
 
 local function erreur(detail)
     gma.gui.msgbox("JDCs instances plugin ERROR", detail)
