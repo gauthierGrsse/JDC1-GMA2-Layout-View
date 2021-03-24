@@ -3,8 +3,10 @@
 -- v1.1
 -- Mars 2021
 -- offset entre les JDC dans le layout view
-layoutOffsetX = 8 -- Distance entre 2 instance main en X
-layoutOffsetY = 7 -- Distance entre 2 instance main en Y
+local layoutOffsetX = 8 -- Distance entre 2 instance main en X
+local layoutOffsetY = 7 -- Distance entre 2 instance main en Y
+
+local sleepTime = 0.1
 
 -- Ne pas toucher au code en dessous
 
@@ -84,37 +86,16 @@ end
 
 local function start()
     gma.feedback("--- JDCs instances group creator started ---")
-    local classType = tostring(gma.textinput("group or fixture", "fixture"))
-    if classType == "fixture" then      -- Si mode fixture
-        local startID = tonumber(gma.textinput("Start Fixture ID", ""))
-        local endID = tonumber(gma.textinput("End Fixture ID", ""))
-        local startGroupID = tonumber(gma.textinput("Start group ID (3 available group)", ""))
-        local layoutViewID = tonumber(gma.textinput("Layout ViewID ", ""))
-        if (startID > endID) then -- test pour remettre dans l'ordre les 2 nombres
-            local bridge = endID
-            endID = startID
-            startID = bridge
-        end
 
-    elseif classType == "group" then    -- Si mode group - Par florian Anaya
-        groupID = tonumber(gma.textinput("Group ID", ""))
-        gma.cmd("SelectDrive 1")
-        local fileName = 'tempfile.xml'
-        local filePath = gma.show.getvar('PATH') .. '/importexport/ .. fileName'
-        gma.cmd("Export Group " .. groupID .. " \"" .. fileName .. "\"")
+    local startID = tonumber(gma.textinput("Start Fixture ID", ""))
+    local endID = tonumber(gma.textinput("End Fixture ID", ""))
+    local startGroupID = tonumber(gma.textinput("Start group ID (3 available group)", ""))
+    local layoutViewID = tonumber(gma.textinput("Layout ViewID ", ""))
 
-        local file = io.open(filePath, "r")
-        local fileContent = file:read('*a')
-        file:close()
-
-        os.remove(filePath)
-
-        for match in fileContent:gmatch('<Subfixture (.-) />') do
-            feedback(match)
-        end
-
-    else
-        erreur("Incompatible entry class !")
+    if (startID > endID) then -- test pour remettre dans l'ordre les 2 nombres
+        local bridge = endID
+        endID = startID
+        startID = bridge
     end
 
     if (gma.gui.confirm("Confirm", "Confirm JDCs instances group and layout create for Fixture " .. startID .. " to " ..
@@ -127,6 +108,7 @@ local function start()
         -- Main Instance
         for x = startID, endID, 1 do
             mainInstanceSelect(x)
+            gma.sleep(sleepTime)
         end
         storeGroup(startGroupID, "JDC_Main")
         gma.cmd("ClearAll")
@@ -135,6 +117,7 @@ local function start()
         -- RGB Panel instances
         for x = startID, endID, 1 do
             panelInstanceSelect(x)
+            gma.sleep(sleepTime)
         end
         storeGroup(startGroupID + 1, "JDC_LED_Panel")
         gma.cmd("ClearAll")
@@ -143,6 +126,7 @@ local function start()
         -- Strobe cell instances
         for x = startID, endID, 1 do
             ledStrobeCellSelect(x)
+            gma.sleep(sleepTime)
         end
         storeGroup(startGroupID + 2, "JDC_LED_Strobe")
         gma.cmd("ClearAll")
@@ -151,6 +135,7 @@ local function start()
         -- Declare fixtures in layout xml
         for x = startID, endID, 1 do
             defFixtInLayout(x)
+            gma.sleep(sleepTime)
             feedback("Def fixture " .. x .. " in layout xml")
         end
         gma.gui.progress.set(progress_bar, 4)
@@ -170,6 +155,7 @@ local function start()
                 countFixture = 0
                 countFixtureY = countFixtureY + 1
             end
+            gma.sleep(sleepTime)
         end
         gma.gui.progress.set(progress_bar, 5)
 
@@ -189,7 +175,7 @@ local function start()
         feedback("Layout imported")
         gma.gui.progress.set(progress_bar, 6)
 
-        gma.sleep(0.5)
+        gma.sleep(sleepTime)
         gma.gui.progress.stop(progress_bar)
         gma.feedback("--- JDCs instances group creator finished ---")
     else
