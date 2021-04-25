@@ -106,6 +106,7 @@ local function start()
         gma.gui.progress.setrange(progress_bar, 0, 6)
 
         -- Main Instance
+        gma.cmd("Clear All")
         for x = startID, endID, 1 do
             mainInstanceSelect(x)
             gma.sleep(sleepTime)
